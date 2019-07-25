@@ -1,0 +1,25 @@
+package Modelo;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Funcionario extends Pessoa {
+
+    /**
+     * Default constructor
+     */
+    public Funcionario() {
+    }
+
+    /**
+     * 
+     */
+    private float salario;
+
+    /**
+     * 
+     */
+    private String funcao;
+
+}

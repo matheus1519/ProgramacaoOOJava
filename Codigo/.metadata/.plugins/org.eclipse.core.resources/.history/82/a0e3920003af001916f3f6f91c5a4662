@@ -1,0 +1,25 @@
+package Modelo;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Pedido {
+
+    /**
+     * Default constructor
+     */
+    public Pedido() {
+    }
+
+    /**
+     * 
+     */
+    private float valor;
+
+    /**
+     * 
+     */
+    private String status;
+
+}

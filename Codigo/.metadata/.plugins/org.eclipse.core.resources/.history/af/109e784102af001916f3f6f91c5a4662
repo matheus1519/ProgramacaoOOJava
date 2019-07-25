@@ -1,0 +1,30 @@
+
+import java.util.*;
+
+/**
+ * 
+ */
+public abstract class Pessoa {
+
+    /**
+     * Default constructor
+     */
+    public Pessoa() {
+    }
+
+    /**
+     * 
+     */
+    protected String nome;
+
+    /**
+     * 
+     */
+    protected String cpf;
+
+    /**
+     * 
+     */
+    protected Date data_nascimento;
+
+}

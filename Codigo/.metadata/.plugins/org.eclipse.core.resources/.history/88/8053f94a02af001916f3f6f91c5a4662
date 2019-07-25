@@ -1,0 +1,15 @@
+
+import java.util.*;
+
+/**
+ * 
+ */
+public class Cliente extends Pessoa {
+
+    /**
+     * Default constructor
+     */
+    public Cliente() {
+    }
+
+}
