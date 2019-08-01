@@ -1,0 +1,66 @@
+package visao;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JDesktopPane;
+import java.awt.BorderLayout;
+
+public class TelaPrincipal {
+
+	private JFrame frame;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					TelaPrincipal window = new TelaPrincipal();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */	
+	public TelaPrincipal() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setSize(800,500);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		
+		JMenuBar menuBar = new JMenuBar();
+		frame.setJMenuBar(menuBar);
+		
+		JMenu mnPedido = new JMenu("Pedido");
+		menuBar.add(mnPedido);
+		
+		JMenu mnProduto = new JMenu("Produto");
+		menuBar.add(mnProduto);
+		
+		JMenu mnCliente = new JMenu("Cliente");
+		menuBar.add(mnCliente);
+		
+		JMenu mnFuncionrio = new JMenu("Funcion\u00E1rio");
+		menuBar.add(mnFuncionrio);
+		
+		JDesktopPane desktopPane = new JDesktopPane();
+		frame.getContentPane().add(desktopPane, BorderLayout.CENTER);
+	}
+
+}

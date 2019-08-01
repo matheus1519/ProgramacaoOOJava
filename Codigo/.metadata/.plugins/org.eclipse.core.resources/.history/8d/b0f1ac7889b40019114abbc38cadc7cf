@@ -1,0 +1,32 @@
+package controle;
+
+import java.sql.*;
+
+import javax.swing.JOptionPane;
+
+import modelo.Produto;
+
+public class DMProduto {
+	private Connection conexao = null;
+	private String sql;
+	
+	public DMProduto() {
+		conexao = DM.conectar();
+	}
+	
+	public boolean salvar(Produto p)
+	{
+		
+		PreparedStatement stm = null;
+		
+		try 
+		{
+			stm = conexao.prepareStatement(sql);
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro - Salvar");		
+		}
+	}
+}

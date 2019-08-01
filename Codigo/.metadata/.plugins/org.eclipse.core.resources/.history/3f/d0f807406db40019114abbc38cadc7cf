@@ -1,0 +1,41 @@
+package visao;
+
+import java.awt.Dimension;
+import java.awt.EventQueue;
+
+import javax.swing.JInternalFrame;
+
+public class TelaProduto extends JInternalFrame {
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					TelaProduto frame = new TelaProduto();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	public void setPosicao() {
+		Dimension d = this.getDesktopPane().getSize();
+		this.setLocation((d.width - this.getSize().width) / 2, (d.height - this.getSize().height) / 2); 
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public TelaProduto() {
+		setClosable(true);
+		setTitle("Gerenciar Produto");
+		setSize(750,400);
+		setPosicao();
+	}
+
+}

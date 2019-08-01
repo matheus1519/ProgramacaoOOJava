@@ -1,0 +1,9 @@
+package controle;
+
+public class DAO 
+{
+	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+	private static final String URL = "jdbc:mysql://locashost:3306/db_pizzaria";
+	private static final String USER = "root";
+	private static final String PASS = "";
+}

@@ -1,0 +1,11 @@
+package controle;
+
+import java.sql.*;
+
+public class DMProduto {
+	private Connection conexao = null;
+	
+	public DMProduto() {
+		conexao = DM.conectar();
+	}
+}

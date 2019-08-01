@@ -1,0 +1,18 @@
+package controle;
+
+import java.sql.*;
+import modelo.Produto;
+
+public class DMProduto {
+	private Connection conexao = null;
+	
+	public DMProduto() {
+		conexao = DM.conectar();
+	}
+	
+	public boolean salvar(Produto p)
+	{
+		PreparedStatement stm = null;
+		
+	}
+}

@@ -1,0 +1,159 @@
+package visao;
+
+import java.awt.EventQueue;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class TelaProduto extends JInternalFrame {
+	private JTextField tIdProduto;
+	private JTextField tNome;
+	private JTextField tDesc;
+	private JTextField tPreco;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					TelaProduto frame = new TelaProduto();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public TelaProduto() {
+		setClosable(true);
+		setTitle("Gerenciar Produto");
+		setSize(750,400);
+		
+		JPanel pPrincipal = new JPanel();
+		GroupLayout groupLayout = new GroupLayout(getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(pPrincipal, GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(pPrincipal, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+		);
+		
+		JLabel label = new JLabel("ID do Produto:");
+		
+		tIdProduto = new JTextField();
+		tIdProduto.setEditable(false);
+		tIdProduto.setColumns(10);
+		
+		JLabel lblNome = new JLabel("Nome:");
+		
+		tNome = new JTextField();
+		tNome.setColumns(10);
+		
+		JLabel lblDescrio = new JLabel("Descri\u00E7\u00E3o:");
+		
+		JLabel lblPreo = new JLabel("Pre\u00E7o:");
+		
+		tDesc = new JTextField();
+		tDesc.setColumns(10);
+		
+		tPreco = new JTextField();
+		tPreco.setColumns(10);
+		
+		JPanel panel = new JPanel();
+		GroupLayout gl_pPrincipal = new GroupLayout(pPrincipal);
+		gl_pPrincipal.setHorizontalGroup(
+			gl_pPrincipal.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pPrincipal.createSequentialGroup()
+					.addGap(67)
+					.addGroup(gl_pPrincipal.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblPreo)
+						.addComponent(lblDescrio)
+						.addComponent(lblNome)
+						.addComponent(label))
+					.addGroup(gl_pPrincipal.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_pPrincipal.createSequentialGroup()
+							.addGap(5)
+							.addComponent(tIdProduto, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_pPrincipal.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_pPrincipal.createParallelGroup(Alignment.LEADING)
+								.addComponent(tNome, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
+								.addComponent(tDesc, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(tPreco, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+					.addContainerGap(407, Short.MAX_VALUE))
+				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)
+		);
+		gl_pPrincipal.setVerticalGroup(
+			gl_pPrincipal.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pPrincipal.createSequentialGroup()
+					.addGroup(gl_pPrincipal.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_pPrincipal.createSequentialGroup()
+							.addGap(67)
+							.addComponent(label))
+						.addGroup(gl_pPrincipal.createSequentialGroup()
+							.addGap(64)
+							.addComponent(tIdProduto, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(18)
+					.addGroup(gl_pPrincipal.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNome)
+						.addComponent(tNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_pPrincipal.createParallelGroup(Alignment.BASELINE, false)
+						.addComponent(lblDescrio)
+						.addComponent(tDesc, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_pPrincipal.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblPreo)
+						.addComponent(tPreco, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(83)
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JButton btnLimpar = new JButton("Limpar");
+		btnLimpar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				tIdProduto.setText("");
+				tNome.setText("");
+				tDesc.setText("");
+				tPreco.setText("");
+			}
+		});
+		btnLimpar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		panel.add(btnLimpar);
+		
+		JButton btnInserir = new JButton("Inserir");
+		btnInserir.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		panel.add(btnInserir);
+		
+		JButton btnEditar = new JButton("Editar");
+		btnEditar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		panel.add(btnEditar);
+		
+		JButton btnApagar = new JButton("Apagar");
+		btnApagar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		panel.add(btnApagar);
+		
+		JButton btnConsultar = new JButton("Consultar");
+		btnConsultar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		panel.add(btnConsultar);
+		pPrincipal.setLayout(gl_pPrincipal);
+		getContentPane().setLayout(groupLayout);
+		
+	}
+	
+	public void setPosicao() {
+	    Dimension d = this.getDesktopPane().getSize();
+	    this.setLocation((d.width - this.getSize().width) / 2, (d.height - this.getSize().height) / 2); 
+	}
+
+}

@@ -1,21 +1,40 @@
-package Modelo;
+package modelo;
 import java.util.*;
+
+import javax.swing.JOptionPane;
+
+import controle.DMProduto;
 
 /**
  * 
  */
 public class Produto {
-
+	
+	private String idProduto;
     private String nome;
     private String descricao;
     private float preco;
+    private DMProduto dmProduto;
+    
+    public Produto() {
+		// TODO Auto-generated constructor stub
+	}
     
     public Produto(String nome, String descricao, float preco) {
     	this.nome = nome;
     	this.descricao = descricao;
     	this.preco = preco;
+    	dmProduto = new DMProduto();
     }
     
+	public String getIdProduto() {
+		return idProduto;
+	}
+
+	public void setIdProduto(String idProduto) {
+		this.idProduto = idProduto;
+	}
+
 	public String getNome() 
 	{
 		return nome;
@@ -42,6 +61,27 @@ public class Produto {
 		this.preco = preco;
 	}
 	
-    
-    
+    public boolean salvar()
+    {
+    	if(dmProduto.salvar(this))
+    	{
+    		return true;
+    	}
+    	else
+    	{
+    		return false;
+    	}
+    }
+
+   
+    public List<Produto> consultar()
+    {
+    	List<Produto> produtos = null;
+    	produtos = dmProduto.consultar();
+    	if(produtos == null)
+    	{
+    		JOptionPane.showMessageDialog(null, "Erro ao Consultar");
+    	}
+    	return produtos;
+    }
 }

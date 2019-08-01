@@ -1,12 +1,15 @@
+create database db_pizzaria;
+use db_pizzaria;
+
 CREATE TABLE produto (
-    id_produto INTEGER PRIMARY KEY,
+    id_produto INTEGER AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(40),
     descricacao VARCHAR(100),
     preco FLOAT(5,2)
 );
 
 CREATE TABLE funcionario (
-    id_funcionario INTEGER PRIMARY KEY,
+    id_funcionario INTEGER AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
     cpf VARCHAR(11),
     data_nascimento DATE,
@@ -15,14 +18,14 @@ CREATE TABLE funcionario (
 );
 
 CREATE TABLE cliente (
-    id_cliente INTEGER PRIMARY KEY,
+    id_cliente INTEGER AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
     cpf VARCHAR(11),
     data_nascimento DATE
 );
 
 CREATE TABLE pedido (
-    id_pedido INTEGER PRIMARY KEY,
+    id_pedido INTEGER AUTO_INCREMENT PRIMARY KEY,
     data_hora TIMESTAMP,
     status VARCHAR(50),
     valor FLOAT(6,2),

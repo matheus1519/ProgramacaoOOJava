@@ -1,0 +1,24 @@
+package controle;
+
+import java.sql.*;
+
+import javax.swing.JOptionPane;
+
+public class DAO 
+{
+	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+	private static final String URL = "jdbc:mysql://locashost:3306/db_pizzaria";
+	private static final String USER = "root";
+	private static final String PASS = "";
+	
+	public static Connection conectar()
+	{
+		try {
+			Class.forName(DRIVER);
+			return DriverManager.getConnection(URL, USER, PASS);
+		} catch (ClassNotFoundException | SQLException e) {
+			JOptionPane.showMessageDialog(null, "Erro - Etapa 1");
+			throw new RuntimeException();
+		}
+	}
+}

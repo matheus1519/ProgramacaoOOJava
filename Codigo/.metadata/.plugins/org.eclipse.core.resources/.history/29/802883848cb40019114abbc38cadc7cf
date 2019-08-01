@@ -1,0 +1,42 @@
+package controle;
+
+import java.sql.*;
+
+import javax.swing.JOptionPane;
+
+import modelo.Produto;
+
+public class DMProduto {
+	private Connection conexao = null;
+	private String sql;
+	
+	public DMProduto() {
+		conexao = DM.conectar();
+	}
+	
+	public boolean salvar(Produto p)
+	{
+		
+		PreparedStatement stm = null;
+		sql = "INSERT INTO produto(nome, descricacao, preco) VALUES (?,?,?)";
+		
+		try 
+		{
+			stm = conexao.prepareStatement(sql);
+			stm.setString(1, p.getNome());
+			stm.setString(2, p.getDescricao());
+			stm.setFloat(2, p.getPreco());
+			stm.executeUpdate();
+			return true;
+		} 
+		catch (SQLException e) 
+		{
+			JOptionPane.showMessageDialog(null, "Erro - Salvar");		
+			return false;
+		}
+		finally
+		{
+			DM.fecharConexao(conexao, stm);
+		}
+	}
+}
