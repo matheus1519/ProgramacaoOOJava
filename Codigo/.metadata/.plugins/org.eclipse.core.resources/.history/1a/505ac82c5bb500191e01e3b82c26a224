@@ -1,0 +1,40 @@
+package modelo;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Funcionario extends Pessoa 
+{
+	private String idFuncionario;
+    private float salario;
+    private String funcao;
+    private DMFuncionario dmFuncionario;
+    
+	public Funcionario(String nome, String cpf, Date data_nascimento, float salario, String funcao) {
+		super(nome, cpf, data_nascimento);
+		this.salario = salario;
+		this.funcao = funcao;
+	}
+	
+	public float getSalario() 
+	{
+		return salario;
+	}
+	public void setSalario(float salario) 
+	{
+		this.salario = salario;
+	}
+	
+	public String getFuncao()
+	{
+		return funcao;
+	}
+	public void setFuncao(String funcao)
+	{
+		this.funcao = funcao;
+	}
+    
+    
+
+}

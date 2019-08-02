@@ -4,15 +4,19 @@ import java.util.*;
 /**
  * 
  */
-public class Funcionario extends Pessoa {
-
+public class Funcionario extends Pessoa 
+{
+	private String idFuncionario;
     private float salario;
     private String funcao;
+    //private DMFuncionario dmFuncionario;
     
-	public Funcionario(String nome, String cpf, Date data_nascimento, float salario, String funcao) {
-		super(nome, cpf, data_nascimento);
+	public Funcionario(String nome, String cpf, String dataNascimento,String idFuncionario, float salario, String funcao) {
+		super(nome, cpf, dataNascimento);
 		this.salario = salario;
 		this.funcao = funcao;
+		this.idFuncionario = idFuncionario;
+		//this.dmFuncionario = new DMFuncionario;
 	}
 	
 	public float getSalario() 

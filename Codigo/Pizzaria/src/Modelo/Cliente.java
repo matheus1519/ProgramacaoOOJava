@@ -1,14 +1,28 @@
 package modelo;
 import java.util.*;
 
+import controle.DMCliente;
+
 /**
  * 
  */
 public class Cliente extends Pessoa 
 {
-
-	public Cliente(String nome, String cpf, Date data_nascimento) {
+	private String idCliente;
+	private DMCliente dmCliente;
+	
+	public Cliente(String idCliente, String nome, String cpf, String data_nascimento) {
 		super(nome, cpf, data_nascimento);
+		this.idCliente = idCliente;
+		this.dmCliente = new DMCliente();
+	}
+
+	public String getIdCliente() {
+		return idCliente;
+	}
+
+	public void setIdCliente(String idCliente) {
+		this.idCliente = idCliente;
 	}
 		
 }

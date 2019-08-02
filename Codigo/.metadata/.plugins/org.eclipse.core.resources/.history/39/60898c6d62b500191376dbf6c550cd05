@@ -1,0 +1,210 @@
+package visao;
+
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+import javax.swing.JButton;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import controle.DMProduto;
+import modelo.Produto;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+public class TelaCliente extends JInternalFrame {
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					TelaCliente frame = new TelaCliente();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public TelaCliente() {
+		setClosable(true);
+		setTitle("Gerenciar Cliente");
+		setSize(750,400);
+		JPanel pPrincipal = new JPanel();
+		getContentPane().add(pPrincipal);
+		
+		JButton btnLimpar = new JButton("Limpar");
+		btnLimpar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				limpar();
+			}
+		});
+		btnLimpar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JButton btnInserir = new JButton("Salvar");
+		btnInserir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(tIdProduto.getText().equalsIgnoreCase(""))
+				{
+					preco = Float.parseFloat(tPreco.getText());
+					Produto prod = new Produto(tNome.getText(), tDesc.getText(), preco);
+					if(prod.salvar())
+					{
+						JOptionPane.showMessageDialog(null, "Salvo com Sucesso");
+						limpar();
+						carregarTabela(modelo);
+						tNome.grabFocus();
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Erro ao Salvar");
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Produto Existente!\nUse o botão 'Editar'");
+				}
+				
+			}
+		});
+		btnInserir.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JButton btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				preco = Float.parseFloat(tPreco.getText());
+				Produto prod = new Produto(tNome.getText(), tDesc.getText(), preco);
+				prod.setIdProduto(tIdProduto.getText());
+				if(prod.atualizar())
+				{
+					JOptionPane.showMessageDialog(null, "Atualizado com Sucesso");
+					limpar();
+					carregarTabela(modelo);
+					tNome.grabFocus();
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Erro ao Atualizar");
+				}
+			}
+		});
+		btnEditar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JButton btnApagar = new JButton("Apagar");
+		btnApagar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(tIdProduto.getText().equalsIgnoreCase(""))
+				{
+					JOptionPane.showMessageDialog(null, "Selecione um Produto da tabela!");
+				}
+				else
+				{
+					int resposta = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esse produto?\nA Exclusão será permanente!", "Atenção", JOptionPane.WARNING_MESSAGE);
+					if(resposta == JOptionPane.YES_OPTION)
+					{
+						preco = Float.parseFloat(tPreco.getText());
+						Produto prod = new Produto(tNome.getText(), tDesc.getText(), preco);
+						prod.setIdProduto(tIdProduto.getText());
+						if(prod.apagar())
+						{
+							JOptionPane.showMessageDialog(null, "Deletado com Sucesso");
+							limpar();
+							carregarTabela(modelo);
+							tNome.grabFocus();
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, "Erro ao Deletar");
+						}
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Operação de apagar cancelada!");
+					}
+				}
+			}
+		});
+		btnApagar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JButton btnConsultar = new JButton("Consultar");
+		btnConsultar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				carregarTabela(modelo);
+			}
+		});
+		btnConsultar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		tPesquisa = new JTextField();
+		tPesquisa.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				carregarTabelaPesquisa(modelo);
+			}
+		});
+		tPesquisa.setColumns(10);
+		
+		
+	}
+	
+	public void setPosicao() {
+	    Dimension d = this.getDesktopPane().getSize();
+	    this.setLocation((d.width - this.getSize().width) / 2, (d.height - this.getSize().height) / 2); 
+	}
+	
+	public void limpar()
+	{
+		tIdProduto.setText("");
+		tNome.setText("");
+		tDesc.setText("");
+		tPreco.setText("");
+		tNome.grabFocus();
+	}
+	
+	
+	public void carregarTabela(DefaultTableModel modelo)
+	{
+		modelo.setRowCount(0);
+		DMProduto dmProd = new DMProduto();
+		for(Produto p: dmProd.consultar())
+		{
+			modelo.addRow(new Object[] {
+					p.getIdProduto(),
+					p.getNome(),
+					p.getDescricao(),
+					p.getPreco()
+			});
+		}
+	}
+	public void carregarTabelaPesquisa(DefaultTableModel modelo)
+	{
+		modelo.setRowCount(0);
+		DMProduto dmProd = new DMProduto();
+		for(Produto p: dmProd.consultar(tPesquisa.getText()))
+		{
+			modelo.addRow(new Object[] {
+					p.getIdProduto(),
+					p.getNome(),
+					p.getDescricao(),
+					p.getPreco()
+			});
+		}
+	}
+
+}
