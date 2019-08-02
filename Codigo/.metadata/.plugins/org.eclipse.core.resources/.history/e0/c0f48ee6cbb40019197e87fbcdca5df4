@@ -1,0 +1,281 @@
+package visao;
+
+import java.awt.*;
+import java.awt.EventQueue;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+
+import modelo.Produto;
+
+import javax.swing.table.DefaultTableModel;
+
+import controle.DMProduto;
+
+import javax.swing.border.BevelBorder;
+
+public class TelaProduto extends JInternalFrame {
+	private JTextField tIdProduto, tNome, tDesc, tPreco;
+	private float preco;
+	private JTable tableResultado;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					TelaProduto frame = new TelaProduto();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public TelaProduto() {
+		setClosable(true);
+		setTitle("Gerenciar Produto");
+		setSize(750,400);
+		
+		JPanel pPrincipal = new JPanel();
+		GroupLayout groupLayout = new GroupLayout(getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(pPrincipal, GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(pPrincipal, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+		);
+		
+		JLabel label = new JLabel("ID do Produto:");
+		
+		tIdProduto = new JTextField();
+		tIdProduto.setEditable(false);
+		tIdProduto.setColumns(10);
+		
+		JLabel lblNome = new JLabel("Nome:");
+		
+		tNome = new JTextField();
+		tNome.setColumns(10);
+		tNome.grabFocus();
+		
+		JLabel lblDescrio = new JLabel("Descri\u00E7\u00E3o:");
+		
+		JLabel lblPreo = new JLabel("Pre\u00E7o:");
+		
+		tDesc = new JTextField();
+		tDesc.setColumns(10);
+		
+		tPreco = new JTextField();
+		tPreco.setColumns(10);
+		
+		JPanel panel = new JPanel();
+		
+		tableResultado = new JTable();
+		tableResultado.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				tIdProduto.setText((String) tableResultado.getValueAt(tableResultado.getSelectedRow(),0));
+				tNome.setText((String) tableResultado.getValueAt(tableResultado.getSelectedRow(),1));
+				tDesc.setText((String) tableResultado.getValueAt(tableResultado.getSelectedRow(),2));
+				tPreco.setText(tableResultado.getValueAt(tableResultado.getSelectedRow(),3).toString());
+			}
+		});
+		tableResultado.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		
+		
+		DefaultTableModel modelo = new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"ID", "Nome", "Descri\u00E7\u00E3o", "Pre\u00E7o"
+				}
+			) {
+				boolean[] columnEditables = new boolean[] {
+					true, true, true, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			};
+		
+		tableResultado.setModel(modelo);
+		
+		
+		
+		tableResultado.getColumnModel().getColumn(0).setPreferredWidth(53);
+		tableResultado.getColumnModel().getColumn(1).setPreferredWidth(94);
+		tableResultado.getColumnModel().getColumn(2).setPreferredWidth(294);
+		tableResultado.getColumnModel().getColumn(3).setResizable(false);
+		GroupLayout gl_pPrincipal = new GroupLayout(pPrincipal);
+		gl_pPrincipal.setHorizontalGroup(
+			gl_pPrincipal.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pPrincipal.createSequentialGroup()
+					.addGap(67)
+					.addGroup(gl_pPrincipal.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblPreo)
+						.addComponent(lblDescrio)
+						.addComponent(lblNome)
+						.addComponent(label))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_pPrincipal.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_pPrincipal.createParallelGroup(Alignment.LEADING)
+							.addComponent(tNome, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
+							.addComponent(tIdProduto, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_pPrincipal.createParallelGroup(Alignment.LEADING)
+							.addComponent(tPreco, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(tDesc, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+					.addComponent(tableResultado, GroupLayout.PREFERRED_SIZE, 263, GroupLayout.PREFERRED_SIZE)
+					.addGap(30))
+				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)
+		);
+		gl_pPrincipal.setVerticalGroup(
+			gl_pPrincipal.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pPrincipal.createSequentialGroup()
+					.addGroup(gl_pPrincipal.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_pPrincipal.createSequentialGroup()
+							.addGap(67)
+							.addGroup(gl_pPrincipal.createParallelGroup(Alignment.BASELINE)
+								.addComponent(label)
+								.addComponent(tIdProduto, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addGroup(gl_pPrincipal.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblNome)
+								.addComponent(tNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addGroup(gl_pPrincipal.createParallelGroup(Alignment.BASELINE, false)
+								.addComponent(lblDescrio)
+								.addComponent(tDesc, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addGroup(gl_pPrincipal.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblPreo)
+								.addComponent(tPreco, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_pPrincipal.createSequentialGroup()
+							.addGap(29)
+							.addComponent(tableResultado, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)))
+					.addGap(38)
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		
+		JButton btnLimpar = new JButton("Limpar");
+		btnLimpar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				limpar();
+			}
+		});
+		btnLimpar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JButton btnInserir = new JButton("Salvar");
+		btnInserir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				preco = Float.parseFloat(tPreco.getText());
+				Produto prod = new Produto(tNome.getText(), tDesc.getText(), preco);
+				if(prod.salvar())
+				{
+					JOptionPane.showMessageDialog(null, "Salvo com Sucesso");
+					limpar();
+					carregarTabela(modelo);
+					tNome.grabFocus();
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Erro ao Salvar");
+				}
+				
+			}
+		});
+		btnInserir.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JButton btnEditar = new JButton("Editar");
+		btnEditar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JButton btnApagar = new JButton("Apagar");
+		btnApagar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JButton btnConsultar = new JButton("Consultar");
+		btnConsultar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Produto p = new Produto();
+				carregarTabela(modelo);
+			}
+		});
+		btnConsultar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(62)
+					.addComponent(btnLimpar)
+					.addGap(56)
+					.addComponent(btnInserir)
+					.addGap(60)
+					.addComponent(btnEditar)
+					.addGap(52)
+					.addComponent(btnConsultar)
+					.addGap(59)
+					.addComponent(btnApagar)
+					.addContainerGap(70, Short.MAX_VALUE))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+					.addContainerGap(30, Short.MAX_VALUE)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnApagar)
+						.addComponent(btnConsultar)
+						.addComponent(btnLimpar)
+						.addComponent(btnInserir)
+						.addComponent(btnEditar))
+					.addGap(20))
+		);
+		panel.setLayout(gl_panel);
+		pPrincipal.setLayout(gl_pPrincipal);
+		getContentPane().setLayout(groupLayout);
+		
+	}
+	
+	public void setPosicao() {
+	    Dimension d = this.getDesktopPane().getSize();
+	    this.setLocation((d.width - this.getSize().width) / 2, (d.height - this.getSize().height) / 2); 
+	}
+	
+	public void limpar()
+	{
+		tIdProduto.setText("");
+		tNome.setText("");
+		tDesc.setText("");
+		tPreco.setText("");
+		tNome.grabFocus();
+	}
+	
+	
+	public void carregarTabela(DefaultTableModel modelo)
+	{
+		modelo.setRowCount(0);
+		DMProduto dmProd = new DMProduto();
+		for(Produto p: dmProd.consultar())
+		{
+			modelo.addRow(new Object[] {
+					p.getIdProduto(),
+					p.getNome(),
+					p.getDescricao(),
+					p.getPreco()
+			});
+		}
+	}
+	
+}

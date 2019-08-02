@@ -84,4 +84,38 @@ public class Produto {
     	}
     	return produtos;
     }
+    
+    public List<Produto> consultar(String nome)
+    {
+    	List<Produto> produtos = null;
+    	produtos = dmProduto.consultar(nome);
+    	if(produtos == null)
+    	{
+    		JOptionPane.showMessageDialog(null, "Erro ao Consultar");
+    	}
+    	return produtos;
+    }
+    
+    public boolean atualizar()
+    {
+    	if(dmProduto.atualizar(this))
+    	{
+    		return true;
+    	}
+    	else
+    	{
+    		return false;
+    	}
+    }
+    public boolean apagar()
+    {
+    	if(dmProduto.apagar(this))
+    	{
+    		return true;
+    	}
+    	else
+    	{
+    		return false;
+    	}
+    }
 }

@@ -1,0 +1,165 @@
+package controle;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
+import modelo.Produto;
+
+public class DMProduto {
+	private Connection conexao = null;
+	private String sql;
+	
+	public DMProduto() {
+		conexao = DM.conectar();
+	}
+	
+	public boolean salvar(Produto p)
+	{
+		
+		PreparedStatement stm = null;
+		sql = "INSERT INTO produto(nome, descricacao, preco) VALUES (?,?,?)";
+		
+		try 
+		{
+			stm = conexao.prepareStatement(sql);
+			stm.setString(1, p.getNome());
+			stm.setString(2, p.getDescricao());
+			stm.setFloat(3, p.getPreco());
+			stm.executeUpdate();
+			return true;
+		} 
+		catch (SQLException e) 
+		{
+			JOptionPane.showMessageDialog(null, "Erro - Salvar");
+			System.out.println(e);
+			return false;
+		}
+		finally
+		{
+			DM.fecharConexao(conexao, stm);
+		}
+	}
+
+	public Produto consultar(String idProduto)
+	{
+		sql = "SELECT * FROM produto WHERE id_produto = ?;";
+		
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		Produto prod = null;
+		
+		List<Produto> produtos = new ArrayList<Produto>();
+		
+		try {
+			stm = conexao.prepareStatement(sql);
+			stm.setString(1, idProduto);
+			rs = stm.executeQuery();
+			rs.next();
+			
+			if(rs.next())
+			{
+				prod = new Produto(rs.getString("nome"),rs.getString("descricacao"),rs.getFloat("preco"));
+				prod.setIdProduto(rs.getString("id_produto"));
+			} 
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e);
+		}
+		finally
+		{
+			DM.fecharConexao(conexao, stm, rs);
+		}
+		return prod;
+		
+	}
+	
+	public List<Produto> consultar()
+	{
+		sql = "SELECT * FROM produto;";
+		
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		
+		List<Produto> produtos = new ArrayList<Produto>();
+		
+		try {
+			stm = conexao.prepareStatement(sql);
+			rs = stm.executeQuery();
+			rs.next();
+			
+			do
+			{
+				Produto prod = new Produto(rs.getString("nome"),rs.getString("descricacao"),rs.getFloat("preco"));
+				prod.setIdProduto(rs.getString("id_produto"));
+				produtos.add(prod);
+			} while((rs.next()));
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e);
+		}
+		finally
+		{
+			DM.fecharConexao(conexao, stm, rs);
+		}
+		return produtos;
+		
+	}
+
+	public boolean atualizar(Produto p)
+	{
+		
+		PreparedStatement stm = null;
+		String campo = "";
+		Produto prodComp = null;
+		
+		sql = "UPDATE produto SET "+ campo +" = ? WHERE id_produto = ?;";
+		
+		try 
+		{
+			prodComp = consultar(p.getIdProduto());
+			if(prodComp==null)
+				System.out.println("Produto comparação é nulo");
+			if(!p.getNome().equals(prodComp.getNome()))
+			{
+				campo = "nome";
+				stm = conexao.prepareStatement(sql);
+				stm.setString(1, p.getNome());
+				stm.setString(2, p.getIdProduto());
+				stm.executeUpdate();
+			}
+			if(!p.getDescricao().equals(prodComp.getDescricao()))
+			{
+				campo = "descricacao";
+				stm = conexao.prepareStatement(sql);
+				stm.setString(1, p.getDescricao());
+				stm.setString(2, p.getIdProduto());
+				stm.executeUpdate();
+			}
+			if(p.getPreco() != prodComp.getPreco())
+			{
+				campo = "preco";
+				stm = conexao.prepareStatement(sql);
+				stm.setFloat(1, p.getPreco());
+				stm.setString(2, p.getIdProduto());
+				stm.executeUpdate();
+			}
+			return true;
+		} 
+		catch (SQLException e) 
+		{
+			JOptionPane.showMessageDialog(null, "Erro - Salvar");
+			System.out.println(e);
+			return false;
+		}
+		finally
+		{
+			DM.fecharConexao(conexao, stm);
+		}
+	}
+
+}
