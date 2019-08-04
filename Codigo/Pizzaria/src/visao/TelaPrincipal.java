@@ -85,6 +85,14 @@ public class TelaPrincipal {
 		menuBar.add(mnFuncionrio);
 		
 		JMenuItem mntmGerenciarFuncionrio = new JMenuItem("Gerenciar Funcion\u00E1rio");
+		mntmGerenciarFuncionrio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				TelaFuncionario vFun = new TelaFuncionario();
+				desktopPane.add(vFun);
+				vFun.setVisible(true);
+				vFun.setPosicao();
+			}
+		});
 		mnFuncionrio.add(mntmGerenciarFuncionrio);
 		
 		JMenu mnOutros = new JMenu("Outros");

@@ -6,7 +6,7 @@ import java.util.*;
 import javax.swing.JOptionPane;
 
 import modelo.Produto;
-import modelo.Cliente;
+import modelo.Funcionarioo;
 import java.util.*;
 
 public class DMCliente {
@@ -17,18 +17,18 @@ public class DMCliente {
 		conexao = DM.conectar();
 	}
 	
-	public boolean salvar(Produto p)
+	public boolean salvar(Funcionarioo p)
 	{
 		
 		PreparedStatement stm = null;
-		sql = "INSERT INTO produto(nome, descricacao, preco) VALUES (?,?,?)";
+		sql = "INSERT INTO cliente(nome, cpf, data_nascimento) VALUES (?,?,?)";
 		
 		try 
 		{
 			stm = conexao.prepareStatement(sql);
 			stm.setString(1, p.getNome());
-			stm.setString(2, p.getDescricao());
-			stm.setFloat(3, p.getPreco());
+			stm.setString(2, p.getCpf());
+			stm.setString(3, p.getDataNascimento());
 			stm.executeUpdate();
 			return true;
 		} 
@@ -44,13 +44,13 @@ public class DMCliente {
 		}
 	}
 
-	public List<Produto> consultar(String nome)
+	public List<Funcionarioo> consultar(String nome)
 	{
-		sql = "SELECT * FROM produto WHERE nome LIKE ?;";
+		sql = "SELECT * FROM cliente WHERE nome LIKE ?;";
 		
 		PreparedStatement stm = null;
 		ResultSet rs = null;
-		List<Produto> produtos = new ArrayList<Produto>();
+		List<Funcionarioo> clientes = new ArrayList<Funcionarioo>();
 		
 		try {
 			stm = conexao.prepareStatement(sql);
@@ -60,9 +60,8 @@ public class DMCliente {
 			{
 				do
 				{
-					Produto prod = new Produto(rs.getString("nome"),rs.getString("descricacao"),rs.getFloat("preco"));
-					prod.setIdProduto(rs.getString("id_produto"));
-					produtos.add(prod);
+					Funcionarioo cli = new Funcionarioo(rs.getString("id_cliente"),rs.getString("nome"),rs.getString("cpf"),rs.getString("data_nascimento"));
+					clientes.add(cli);
 				} while((rs.next()));				
 			}
 			
@@ -75,18 +74,18 @@ public class DMCliente {
 		{
 			DM.fecharConexao(conexao, stm, rs);
 		}
-		return produtos;
+		return clientes;
 		
 	}
 	
-	public List<Cliente> consultar()
+	public List<Funcionarioo> consultar()
 	{
 		sql = "SELECT * FROM cliente;";
 		
 		PreparedStatement stm = null;
 		ResultSet rs = null;
 		
-		List<Cliente> clientes = new ArrayList<Cliente>();
+		List<Funcionarioo> clientes = new ArrayList<Funcionarioo>();
 		
 		try {
 			stm = conexao.prepareStatement(sql);
@@ -96,7 +95,7 @@ public class DMCliente {
 			{			
 				do
 				{
-					Cliente cli = new Cliente(rs.getString("id_cliente"),rs.getString("nome"),rs.getString("cpf"),rs.getDate("data_nascimento").toString());
+					Funcionarioo cli = new Funcionarioo(rs.getString("id_cliente"),rs.getString("nome"),rs.getString("cpf"),rs.getDate("data_nascimento").toString());
 					clientes.add(cli);
 				} while((rs.next()));
 			}
@@ -113,22 +112,22 @@ public class DMCliente {
 		
 	}
 
-	public boolean atualizar(Produto p)
+	public boolean atualizar(Funcionarioo cli)
 	{
 		
 		PreparedStatement stm = null;
-		String campo = "";
 		Produto prodComp = null;
 		
-		sql = "UPDATE produto SET nome = ?, descricacao = ?, preco = ? WHERE id_produto = '"+ p.getIdProduto() +"';";
+		sql = "UPDATE cliente SET nome = ?, cpf = ?, data_nascimento = ? WHERE id_cliente = ?;";
 		
 		try 
 		{
 			
 			stm = conexao.prepareStatement(sql);
-			stm.setString(1, p.getNome());
-			stm.setString(2, p.getDescricao());
-			stm.setFloat(3, p.getPreco());
+			stm.setString(1, cli.getNome());
+			stm.setString(2, cli.getCpf());
+			stm.setString(3, cli.getDataNascimento());
+			stm.setString(4, cli.getIdCliente());
 			stm.executeUpdate();
 			
 			return true;
@@ -145,16 +144,16 @@ public class DMCliente {
 		}
 	}
 	
-	public boolean apagar(Produto prod)
+	public boolean apagar(Funcionarioo cli)
 	{
 		
 		PreparedStatement stm = null;
-		sql = "delete from produto where id_produto = ?;";
+		sql = "delete from cliente where id_cliente = ?;";
 		
 		try 
 		{
 			stm = conexao.prepareStatement(sql);
-			stm.setString(1, prod.getIdProduto());
+			stm.setString(1, cli.getIdCliente());
 			stm.execute();
 			return true;
 		} 

@@ -8,13 +8,17 @@ public abstract class Pessoa {
 
 	protected String nome;
 	protected String cpf;
-	protected String data_nascimento;
+	protected String dataNascimento;
 	
-	public Pessoa(String nome, String cpf, String data_nascimento) {
+	public Pessoa() {
+		
+	}
+	
+	public Pessoa(String nome, String cpf, String dataNascimento) {
 		super();
 		this.nome = nome;
 		this.cpf = cpf;
-		this.data_nascimento = data_nascimento;
+		this.dataNascimento = dataNascimento;
 	}
 	
 	public String getNome() 
@@ -35,13 +39,13 @@ public abstract class Pessoa {
 		this.cpf = cpf;
 	}
 	
-	public String getData_nascimento() 
+	public String getDataNascimento() 
 	{
-		return data_nascimento;
+		return dataNascimento;
 	}
-	public void setData_nascimento(String data_nascimento) 
+	public void setData_nascimento(String dataNascimento) 
 	{
-		this.data_nascimento = data_nascimento;
+		this.dataNascimento = dataNascimento;
 	}
    
 	

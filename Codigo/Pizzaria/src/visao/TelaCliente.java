@@ -1,13 +1,7 @@
 package visao;
 
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.awt.event.*;
 
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
@@ -21,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controle.DMCliente;
 import controle.DMProduto;
-import modelo.Cliente;
+import modelo.Funcionarioo;
 import modelo.Produto;
 
 import java.awt.BorderLayout;
@@ -72,7 +66,7 @@ public class TelaCliente extends JInternalFrame
 				.addComponent(pPrincipal, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
 		);
 		
-		JLabel lId = new JLabel("ID do Produto:");
+		JLabel lId = new JLabel("ID do Cliente");
 		lId.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		tIdCliente = new JTextField();
@@ -110,7 +104,7 @@ public class TelaCliente extends JInternalFrame
 				tIdCliente.setText((String) tableResultado.getValueAt(tableResultado.getSelectedRow(),0));
 				tNome.setText((String) tableResultado.getValueAt(tableResultado.getSelectedRow(),1));
 				tCpf.setText((String) tableResultado.getValueAt(tableResultado.getSelectedRow(),2));
-				tNascimento.setText(tableResultado.getValueAt(tableResultado.getSelectedRow(),3).toString());
+				tNascimento.setText((String)tableResultado.getValueAt(tableResultado.getSelectedRow(),3));
 			}
 		});
 		tableResultado.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -228,27 +222,33 @@ public class TelaCliente extends JInternalFrame
 		JButton btnInserir = new JButton("Salvar");
 		btnInserir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				/*
-				if(tIdProduto.getText().equalsIgnoreCase(""))
+				if(tIdCliente.getText().equalsIgnoreCase(""))
 				{
-					preco = Float.parseFloat(tPreco.getText());
-					Produto prod = new Produto(tNome.getText(), tDesc.getText(), preco);
-					if(prod.salvar())
+					if(!(tNome.getText().equals("") || tCpf.getText().equals("") || tNascimento.getText().equals("")))
 					{
-						JOptionPane.showMessageDialog(null, "Salvo com Sucesso");
-						limpar();
-						carregarTabela(modelo);
-						tNome.grabFocus();
+						Funcionarioo cli = new Funcionarioo(tNome.getText(), tCpf.getText(), tNascimento.getText());
+						if(cli.salvar())
+						{
+							JOptionPane.showMessageDialog(null, "Salvo com Sucesso");
+							limpar();
+							carregarTabela(modelo);
+							tNome.grabFocus();
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, "Erro ao Salvar");
+						}
 					}
-					else
+					else 
 					{
-						JOptionPane.showMessageDialog(null, "Erro ao Salvar");
+						JOptionPane.showMessageDialog(null, "Nenhum campo pode ficar vazio!");
+						tNome.grabFocus();
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Produto Existente!\nUse o botão 'Editar'");
-				}*/
+					JOptionPane.showMessageDialog(null, "Cliente Existente!\nUse o botão 'Editar'");
+				}
 				
 			}
 		});
@@ -257,11 +257,8 @@ public class TelaCliente extends JInternalFrame
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				/*
-				preco = Float.parseFloat(tPreco.getText());
-				Produto prod = new Produto(tNome.getText(), tDesc.getText(), preco);
-				prod.setIdProduto(tIdProduto.getText());
-				if(prod.atualizar())
+				Funcionarioo cli = new Funcionarioo(tIdCliente.getText(),tNome.getText(), tCpf.getText(), tNascimento.getText());
+				if(cli.atualizar())
 				{
 					JOptionPane.showMessageDialog(null, "Atualizado com Sucesso");
 					limpar();
@@ -271,7 +268,7 @@ public class TelaCliente extends JInternalFrame
 				else
 				{
 					JOptionPane.showMessageDialog(null, "Erro ao Atualizar");
-				}*/
+				}
 			}
 		});
 		btnEditar.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -279,20 +276,17 @@ public class TelaCliente extends JInternalFrame
 		JButton btnApagar = new JButton("Apagar");
 		btnApagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				/*
-				if(tIdProduto.getText().equalsIgnoreCase(""))
+				if(tIdCliente.getText().equalsIgnoreCase(""))
 				{
-					JOptionPane.showMessageDialog(null, "Selecione um Produto da tabela!");
+					JOptionPane.showMessageDialog(null, "Selecione um cliente da tabela!");
 				}
 				else
 				{
-					int resposta = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esse produto?\nA Exclusão será permanente!", "Atenção", JOptionPane.WARNING_MESSAGE);
+					int resposta = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esse cliente?\nA Exclusão será permanente!", "Atenção", JOptionPane.WARNING_MESSAGE);
 					if(resposta == JOptionPane.YES_OPTION)
 					{
-						preco = Float.parseFloat(tPreco.getText());
-						Produto prod = new Produto(tNome.getText(), tDesc.getText(), preco);
-						prod.setIdProduto(tIdProduto.getText());
-						if(prod.apagar())
+						Funcionarioo cli = new Funcionarioo(tIdCliente.getText());
+						if(cli.apagar())
 						{
 							JOptionPane.showMessageDialog(null, "Deletado com Sucesso");
 							limpar();
@@ -309,7 +303,6 @@ public class TelaCliente extends JInternalFrame
 						JOptionPane.showMessageDialog(null, "Operação de apagar cancelada!");
 					}
 				}
-				*/
 			}
 		});
 		btnApagar.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -326,10 +319,10 @@ public class TelaCliente extends JInternalFrame
 		tPesquisa.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				// carregarTabelaPesquisa(modelo);
+				carregarTabelaPesquisa(modelo);
 			}
 		});
-tPesquisa.setColumns(10);
+		tPesquisa.setColumns(10);
 		
 		JLabel lblPesquisar = new JLabel("Pesquisar:");
 		lblPesquisar.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -397,27 +390,27 @@ tPesquisa.setColumns(10);
 	{
 		modelo.setRowCount(0);
 		DMCliente dmCli = new DMCliente();
-		for(Cliente p: dmCli.consultar())
+		for(Funcionarioo p: dmCli.consultar())
 		{
 			modelo.addRow(new Object[] {
 					p.getIdCliente(),
 					p.getNome(),
 					p.getCpf(),
-					p.getData_nascimento()
+					p.getDataNascimento()
 			});
 		}
 	}
 	public void carregarTabelaPesquisa(DefaultTableModel modelo)
 	{
 		modelo.setRowCount(0);
-		DMProduto dmProd = new DMProduto();
-		for(Produto p: dmProd.consultar(tPesquisa.getText()))
+		DMCliente dmCli = new DMCliente();
+		for(Funcionarioo p: dmCli.consultar(tPesquisa.getText()))
 		{
 			modelo.addRow(new Object[] {
-					p.getIdProduto(),
+					p.getIdCliente(),
 					p.getNome(),
-					p.getDescricao(),
-					p.getPreco()
+					p.getCpf(),
+					p.getDataNascimento()
 			});
 		}
 	}

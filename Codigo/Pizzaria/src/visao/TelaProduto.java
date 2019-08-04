@@ -225,21 +225,26 @@ public class TelaProduto extends JInternalFrame {
 				
 				if(tIdProduto.getText().equalsIgnoreCase(""))
 				{
-					preco = Float.parseFloat(tPreco.getText());
-					Produto prod = new Produto(tNome.getText(), tDesc.getText(), preco);
-					if(prod.salvar())
+					if(!(tNome.getText().equals("") || tDesc.getText().equals("") || tPreco.getText().equals("")))
 					{
-						JOptionPane.showMessageDialog(null, "Salvo com Sucesso");
-						limpar();
-						carregarTabela(modelo);
+						preco = Float.parseFloat(tPreco.getText());
+						Produto prod = new Produto(tNome.getText(), tDesc.getText(), preco);
+						if(prod.salvar())
+						{
+							JOptionPane.showMessageDialog(null, "Salvo com Sucesso");
+							limpar();
+							carregarTabela(modelo);
+							tNome.grabFocus();
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Erro ao Salvar");
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Nenhum campo pode ficar vazio!");
 						tNome.grabFocus();
 					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "Erro ao Salvar");
-					}
-				}
-				else
+				} else
 				{
 					JOptionPane.showMessageDialog(null, "Produto Existente!\nUse o botão 'Editar'");
 				}

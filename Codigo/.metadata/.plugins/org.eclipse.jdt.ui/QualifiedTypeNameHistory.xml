@@ -4,4 +4,6 @@
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 <fullyQualifiedTypeName name="javax.swing.JLabel"/>
 <fullyQualifiedTypeName name="controle.DMCliente"/>
+<fullyQualifiedTypeName name="modelo.Funcionario"/>
+<fullyQualifiedTypeName name="controle.DMFuncionario"/>
 </qualifiedTypeNameHistroy>
