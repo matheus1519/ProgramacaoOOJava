@@ -3,7 +3,7 @@ import java.util.*;
 
 import javax.swing.JOptionPane;
 
-import controle.DMProduto;
+import persistencia.DMProduto;
 
 /**
  * 

@@ -1,7 +1,7 @@
 package modelo;
 import java.util.*;
 
-import controle.DMFuncionario;
+import persistencia.DMFuncionario;
 
 /**
  * 

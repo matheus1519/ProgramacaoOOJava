@@ -1,0 +1,1 @@
+Descrição mini-mundo, diagrama de classes, diagrama de dados lógico. 
