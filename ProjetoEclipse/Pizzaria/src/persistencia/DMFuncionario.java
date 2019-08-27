@@ -80,6 +80,66 @@ public class DMFuncionario {
 		
 	}
 	
+	public Funcionario consultarUm(int id)
+	{
+		sql = "SELECT * FROM funcionario where id_funcionario = ?;";
+		
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		Funcionario fun = null;
+		
+		try {
+			stm = conexao.prepareStatement(sql);
+			stm.setInt(1, id);
+			rs = stm.executeQuery();
+			
+			if(rs.next())
+			{			
+				fun = new Funcionario(rs.getString("id_funcionario"),rs.getString("nome"),rs.getString("cpf"),rs.getString("data_nascimento"), rs.getFloat("salario"),rs.getString("funcao"));
+			}
+			
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		finally
+		{
+			DM.fecharConexao(conexao, stm, rs);
+		}
+
+		return fun;
+		
+	}
+	
+	public Funcionario consultarUm(String nome)
+	{
+		sql = "SELECT * FROM funcionario WHERE nome = ?;";
+		
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		Funcionario fun = null;
+		
+		try {
+			stm = conexao.prepareStatement(sql);
+			stm.setString(1, nome);
+			rs = stm.executeQuery();
+			
+			if(rs.next())
+			{			
+				fun = new Funcionario(rs.getString("id_funcionario"),rs.getString("nome"),rs.getString("cpf"),rs.getString("data_nascimento"), rs.getFloat("salario"),rs.getString("funcao"));
+			}
+			
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		finally
+		{
+			DM.fecharConexao(conexao, stm, rs);
+		}
+
+		return fun;
+		
+	}
+	
 	public List<Funcionario> consultar()
 	{
 		sql = "SELECT * FROM funcionario;";

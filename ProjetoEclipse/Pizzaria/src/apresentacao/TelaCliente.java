@@ -112,7 +112,7 @@ public class TelaCliente extends JInternalFrame
 				}
 			) {
 				boolean[] columnEditables = new boolean[] {
-					true, true, true, false
+						false, false, false, false
 				};
 				public boolean isCellEditable(int row, int column) {
 					return columnEditables[column];

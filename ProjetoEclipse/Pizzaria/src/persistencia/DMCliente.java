@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 
 import modelo.Produto;
 import modelo.Cliente;
+import modelo.Funcionario;
+
 import java.util.*;
 
 public class DMCliente {
@@ -112,6 +114,66 @@ public class DMCliente {
 		
 	}
 
+	public Cliente consultarUm(int id)
+	{
+		sql = "SELECT * FROM cliente where id_cliente = ?;";
+		
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		Cliente cli = null;
+		
+		try {
+			stm = conexao.prepareStatement(sql);
+			stm.setInt(1, id);
+			rs = stm.executeQuery();
+			
+			if(rs.next())
+			{			
+				cli = new Cliente(rs.getString("id_cliente"),rs.getString("nome"),rs.getString("cpf"),rs.getDate("data_nascimento").toString());
+			}
+			
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		finally
+		{
+			DM.fecharConexao(conexao, stm, rs);
+		}
+
+		return cli;
+		
+	}
+	
+	public Cliente consultarUm(String nome)
+	{
+		sql = "SELECT * FROM cliente WHERE nome = ?;";
+		
+		PreparedStatement stm = null;
+		ResultSet rs = null;
+		Cliente cli = null;
+		
+		try {
+			stm = conexao.prepareStatement(sql);
+			stm.setString(1, nome);
+			rs = stm.executeQuery();
+			
+			if(rs.next())
+			{			
+				cli = new Cliente(rs.getString("id_cliente"),rs.getString("nome"),rs.getString("cpf"),rs.getDate("data_nascimento").toString());
+			}
+			
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		finally
+		{
+			DM.fecharConexao(conexao, stm, rs);
+		}
+
+		return cli;
+		
+	}
+	
 	public boolean atualizar(Cliente cli)
 	{
 		

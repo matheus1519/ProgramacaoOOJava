@@ -53,10 +53,10 @@ public class TelaPrincipal {
 		JMenuItem mntmGerenciarPedido = new JMenuItem("Gerenciar Pedido");
 		mntmGerenciarPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPedido vProd = new TelaPedido();
-				desktopPane.add(vProd);
-				vProd.setVisible(true);
-				vProd.setPosicao();
+				TelaPedido vPed = new TelaPedido();
+				desktopPane.add(vPed);
+				vPed.setVisible(true);
+				vPed.setPosicao();
 			}
 		});
 		mnPedido.add(mntmGerenciarPedido);

@@ -1,4 +1,3 @@
-drop database db_pizzaria;
 create database db_pizzaria;
 use db_pizzaria;
 
@@ -26,8 +25,8 @@ CREATE TABLE cliente (
 );
 
 CREATE TABLE pedido (
-    id_pedido INTEGER AUTO_INCREMENT PRIMARY KEY,
-    data_hora TIMESTAMP default current_timestamp,
+    id_pedido INTEGER PRIMARY KEY,
+    data_hora TIMESTAMP,
     status VARCHAR(50),
     valor FLOAT(6,2),
     id_cliente INTEGER,

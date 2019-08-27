@@ -4,8 +4,12 @@
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 <fullyQualifiedTypeName name="javax.swing.JLabel"/>
 <fullyQualifiedTypeName name="controle.DMCliente"/>
-<fullyQualifiedTypeName name="modelo.Funcionario"/>
 <fullyQualifiedTypeName name="controle.DMFuncionario"/>
 <fullyQualifiedTypeName name="modelo.Cliente"/>
+<fullyQualifiedTypeName name="java.beans.VetoableChangeListener"/>
+<fullyQualifiedTypeName name="modelo.Pedido"/>
+<fullyQualifiedTypeName name="persistencia.DMFuncionario"/>
 <fullyQualifiedTypeName name="persistencia.DMCliente"/>
+<fullyQualifiedTypeName name="persistencia.DMPedido"/>
+<fullyQualifiedTypeName name="modelo.Funcionario"/>
 </qualifiedTypeNameHistroy>

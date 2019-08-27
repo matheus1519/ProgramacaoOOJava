@@ -14,11 +14,14 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-
+import modelo.Cliente;
 import modelo.Funcionario;
+import modelo.Pedido;
+import modelo.Pedido;
 import modelo.Produto;
 import persistencia.DMCliente;
 import persistencia.DMFuncionario;
+import persistencia.DMPedido;
 import persistencia.DMProduto;
 
 import java.awt.BorderLayout;
@@ -29,11 +32,19 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.BevelBorder;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+import java.beans.PropertyChangeEvent;
 
 public class TelaPedido extends JInternalFrame 
 {
 	private JTextField tStatus, tValor, tPedido;
 	private JTable tableResultado;
+	private Funcionario funAtual;
+	private Cliente cliAtual;
+	private JComboBox cbFunc;
+	private JComboBox cbCli;
 	/**
 	 * Launch the application.
 	 */
@@ -87,14 +98,11 @@ public class TelaPedido extends JInternalFrame
 		tableResultado.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				/*
-				tIdFuncionario.setText((String) tableResultado.getValueAt(tableResultado.getSelectedRow(),0));
-				tNome.setText((String) tableResultado.getValueAt(tableResultado.getSelectedRow(),1));
-				tCpf.setText((String) tableResultado.getValueAt(tableResultado.getSelectedRow(),2));
-				tNascimento.setText((String)tableResultado.getValueAt(tableResultado.getSelectedRow(),3));
-				tSalario.setText(tableResultado.getValueAt(tableResultado.getSelectedRow(),4).toString());
-				tFuncao.setText((String)tableResultado.getValueAt(tableResultado.getSelectedRow(),5));
-				*/
+				tPedido.setText((String) tableResultado.getValueAt(tableResultado.getSelectedRow(),0));
+				cbFunc.setSelectedItem((String) tableResultado.getValueAt(tableResultado.getSelectedRow(),1));
+				cbCli.setSelectedItem((String) tableResultado.getValueAt(tableResultado.getSelectedRow(),2));
+				tStatus.setText((String)tableResultado.getValueAt(tableResultado.getSelectedRow(),3));
+				tValor.setText(tableResultado.getValueAt(tableResultado.getSelectedRow(),4).toString());
 			}
 		});
 		tableResultado.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -104,11 +112,11 @@ public class TelaPedido extends JInternalFrame
 				new Object[][] {
 				},
 				new String[] {
-					"ID", "Nome", "CPF", "Data de Nascimento", "Salário", "Função"
+					"ID", "Funcionario", "Cliente", "Status", "Valor"
 				}
 			) {
 				boolean[] columnEditables = new boolean[] {
-					true, true, true, false, true, true
+					false, false, false, false, false
 				};
 				public boolean isCellEditable(int row, int column) {
 					return columnEditables[column];
@@ -144,16 +152,15 @@ public class TelaPedido extends JInternalFrame
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		tPedido = new JTextField();
+		tPedido.setEditable(false);
 		tPedido.setColumns(10);
 		
 		JLabel lblSalario = new JLabel("Valor");
 		lblSalario.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		JComboBox cbFunc = new JComboBox();
-		cbFunc.setModel(new DefaultComboBoxModel(new String[] {"Selecione um Funcion\u00E1rio", "Caralho"}));
+		cbFunc = new JComboBox();
+		cbCli = new JComboBox();
 		
-		JComboBox cbCli = new JComboBox();
-		cbCli.setModel(new DefaultComboBoxModel(new String[] {"Selecione um Cliente", "Caralho"}));
 		
 		JLabel lblCliente = new JLabel("Cliente:");
 		lblCliente.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -254,18 +261,19 @@ public class TelaPedido extends JInternalFrame
 		JButton btnInserir = new JButton("Salvar");
 		btnInserir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				/*
-				if(tIdFuncionario.getText().equalsIgnoreCase(""))
+				if(tPedido.getText().equalsIgnoreCase(""))
 				{
-					if(!(tNome.getText().equals("") || tCpf.getText().equals("") || tNascimento.getText().equals("") || tSalario.getText().equals("")|| tFuncao.getText().equals("")))
+					if(!(cbCli.getSelectedIndex() == 0 || cbFunc.getSelectedIndex() == 0  || tStatus.getText().equals("") || tValor.getText().equals("")))
 					{
-						Funcionario fun = new Funcionario(tNome.getText(), tCpf.getText(), tNascimento.getText(), Float.parseFloat(tSalario.getText()), tFuncao.getText());
-						if(fun.salvar())
+						funAtual = new DMFuncionario().consultarUm((String)cbFunc.getSelectedItem());
+						cliAtual = new DMCliente().consultarUm((String)cbCli.getSelectedItem());
+						Pedido ped = new Pedido(Float.parseFloat(tValor.getText()), tStatus.getText(), funAtual,cliAtual);
+						if(ped.salvar())
 						{
 							JOptionPane.showMessageDialog(null, "Salvo com Sucesso");
 							limpar();
 							carregarTabela(modelo);
-							tNome.grabFocus();
+							tStatus.grabFocus();
 						}
 						else
 						{
@@ -275,14 +283,13 @@ public class TelaPedido extends JInternalFrame
 					else 
 					{
 						JOptionPane.showMessageDialog(null, "Nenhum campo pode ficar vazio!");
-						tNome.grabFocus();
+						tStatus.grabFocus();
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Funcionario Existente!\nUse o botão 'Editar'");
+					JOptionPane.showMessageDialog(null, "Pedido Existente!\nUse o botão 'Editar'");
 				}
-				*/
 			}
 		});
 		btnInserir.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -290,20 +297,20 @@ public class TelaPedido extends JInternalFrame
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				/*
-				Funcionario fun = new Funcionario(tIdFuncionario.getText(),tNome.getText(), tCpf.getText(), tNascimento.getText(), Float.parseFloat(tSalario.getText()), tFuncao.getText());
-				if(fun.atualizar())
+				funAtual = new DMFuncionario().consultarUm((String)cbFunc.getSelectedItem());
+				cliAtual = new DMCliente().consultarUm((String)cbCli.getSelectedItem());
+				Pedido ped = new Pedido(tPedido.getText(),Float.parseFloat(tValor.getText()), tStatus.getText(), funAtual,cliAtual);
+				if(ped.atualizar())
 				{
 					JOptionPane.showMessageDialog(null, "Atualizado com Sucesso");
 					limpar();
 					carregarTabela(modelo);
-					tNome.grabFocus();
+					tStatus.grabFocus();
 				}
 				else
 				{
 					JOptionPane.showMessageDialog(null, "Erro ao Atualizar");
 				}
-				*/
 			}
 		});
 		btnEditar.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -311,23 +318,22 @@ public class TelaPedido extends JInternalFrame
 		JButton btnApagar = new JButton("Apagar");
 		btnApagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				/*
-				if(tIdFuncionario.getText().equalsIgnoreCase(""))
+				if(tPedido.getText().equalsIgnoreCase(""))
 				{
-					JOptionPane.showMessageDialog(null, "Selecione um cliente da tabela!");
+					JOptionPane.showMessageDialog(null, "Selecione um pedido da tabela!");
 				}
 				else
 				{
-					int resposta = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esse funcionario?\nA Exclusão será permanente!", "Atenção", JOptionPane.WARNING_MESSAGE);
+					int resposta = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esse pedido?\nA Exclusão será permanente!", "Atenção", JOptionPane.WARNING_MESSAGE);
 					if(resposta == JOptionPane.YES_OPTION)
 					{
-						Funcionario fun = new Funcionario(tIdFuncionario.getText());
-						if(fun.apagar())
+						Pedido ped = new Pedido(tPedido.getText());
+						if(ped.apagar())
 						{
 							JOptionPane.showMessageDialog(null, "Deletado com Sucesso");
 							limpar();
 							carregarTabela(modelo);
-							tNome.grabFocus();
+							tStatus.grabFocus();
 						}
 						else
 						{
@@ -339,7 +345,6 @@ public class TelaPedido extends JInternalFrame
 						JOptionPane.showMessageDialog(null, "Operação de apagar cancelada!");
 					}
 				}
-				*/
 			}
 		});
 		btnApagar.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -383,8 +388,8 @@ public class TelaPedido extends JInternalFrame
 		pPrincipal.setLayout(gl_pPrincipal);
 		getContentPane().setLayout(groupLayout);
 		carregarTabela(modelo);
-		carregarCombo(cbFunc);
-		carregarComboCliente(cbCli);
+		carregarFunc(cbFunc);
+		carregarCli(cbCli);
 	}
 	
 	public void setPosicao() {
@@ -394,44 +399,38 @@ public class TelaPedido extends JInternalFrame
 	
 	public void limpar()
 	{
-		/*
-		tIdFuncionario.setText("");
-		tNome.setText("");
-		tNascimento.setText("");
-		tCpf.setText("");
-		tFuncao.setText("");
-		tSalario.setText("");
-		tNome.grabFocus();
-		*/
+		tPedido.setText("");
+		tStatus.setText("");
+		tValor.setText("");
+		cbCli.setSelectedIndex(0);
+		cbFunc.setSelectedIndex(0);
+		tStatus.grabFocus();
 	}
 	
 	
 	public void carregarTabela(DefaultTableModel modelo)
 	{
 		modelo.setRowCount(0);
-		DMFuncionario dmFun = new DMFuncionario();
-		for(Funcionario fun: dmFun.consultar())
+		DMPedido dmPed = new DMPedido();
+		for(Pedido ped: dmPed.consultar())
 		{
 			modelo.addRow(new Object[] {
-					fun.getIdFuncionario(),
-					fun.getNome(),
-					fun.getCpf(),
-					fun.getDataNascimento(),
-					fun.getSalario(),
-					fun.getFuncao()
+					ped.getIdPedido(),
+					ped.getFun().getNome(),
+					ped.getCli().getNome(),
+					ped.getStatus(),
+					ped.getValor()
 			});
 		}
 	}
 	
-	public void carregarCombo(JComboBox combo)
+	public void carregarFunc(JComboBox combo)
 	{
-		DMFuncionario dmFun = new DMFuncionario();
 		combo.setModel(new DefaultComboBoxModel(new DMFuncionario().consultarNomes().toArray()));
 	}
 	
-	public void carregarComboCliente(JComboBox combo)
+	public void carregarCli(JComboBox combo)
 	{
-		DMFuncionario dmFun = new DMFuncionario();
 		combo.setModel(new DefaultComboBoxModel(new DMCliente().consultarNomes().toArray()));
 	}
 }
